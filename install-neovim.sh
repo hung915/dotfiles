@@ -1,7 +1,6 @@
 #!/bin/bash
 set -e  # Exit on error
 
-sudo apt-get install software-properties-common
-sudo add-apt-repository ppa:neovim-ppa/stable
-sudo apt-get update
-sudo apt-get install -y neovim
+curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage
+sudo chmod u+x nvim-linux-x86_64.appimage
+sudo mv nvim-linux-x86_64.appimage /usr/local/bin/nvim
