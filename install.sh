@@ -62,18 +62,6 @@ mv nvim-linux-x86_64.appimage /opt/nvim/nvim
 sudo apt install libfuse2
 
 # 9. Install uv, nvm
+echo "Installing UV, NVM..."
 curl -LsSf https://astral.sh/uv/install.sh | sh
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-
-# Create necessary config directories
-echo "Creating config directories..."
-mkdir -p ~/.config/wezterm
-mkdir -p ~/.config/zsh
-mkdir -p ~/.config/nvim
-
-echo "Installation complete!"
-echo "Please manually configure:"
-echo "1. Wezterm config: Copy wezterm.lua to ~/.config/wezterm/"
-echo "2. Zsh config: Copy .zshrc to ~/.config/zsh/"
-echo "3. Starship config: Copy starship.toml to ~/.config/"
-echo "4. Neovim config: Set up your preferred configuration in ~/.config/nvim/"
