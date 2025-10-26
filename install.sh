@@ -3,17 +3,15 @@ set -e  # Exit on error
 
 echo "Starting installation of development environment..."
 
-# 1. Install git, zsh, and wezterm
+# 1. Install zsh, and wezterm
 echo "Installing git, zsh, and wezterm..."
-sudo add-apt-repository ppa:git-core/ppa -y
-sudo apt-get update
-sudo apt-get install -y git zsh
+sudo apt-get install -y zsh
 
 # Move .zshrc to ~/.config/zsh/ and set up zsh to use it
 echo "Setting up Zsh configuration..."
 mkdir -p ~/.config/zsh
-mv ~/.zshrc ~/.config/zsh/.zshrc
-echo "export ZDOTDIR=~/.config/zsh" >> ${$HOME}/.profile
+# Create ZDOTDIR environment variable
+echo "export ZDOTDIR=\$HOME/.config/zsh" | sudo tee -a /etc/zsh/zshenv
 
 # Install zsh-autosuggestions, zsh-syntax-highlighting
 echo "Installing zsh-autosuggestions and zsh-syntax-highlighting..."
