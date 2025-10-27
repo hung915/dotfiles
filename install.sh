@@ -9,23 +9,18 @@ sudo apt-get install -y zsh
 
 # Move .zshrc to ~/.config/zsh/ and set up zsh to use it
 echo "Setting up Zsh configuration..."
-mkdir -p ~/.config/zsh
 # Create ZDOTDIR environment variable
 echo "export ZDOTDIR=\$HOME/.config/zsh" | sudo tee -a /etc/zsh/zshenv
 
-# Install zsh-autosuggestions, zsh-syntax-highlighting
-echo "Installing zsh-autosuggestions and zsh-syntax-highlighting..."
-git clone https://github.com/zsh-users/zsh-autosuggestions ~/.config/zsh/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.config/zsh/zsh-syntax-highlighting
-
 # Install wezterm
+echo "Installing wezterm..."
 curl -fsSL https://apt.fury.io/wez/gpg.key | sudo gpg --yes --dearmor -o /etc/apt/keyrings/wezterm-fury.gpg
 echo 'deb [signed-by=/etc/apt/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' | sudo tee /etc/apt/sources.list.d/wezterm.list
 sudo apt update && sudo apt install -y wezterm
 
 # 2. Set wezterm as default terminal and zsh as default shell
 echo "Setting up default terminal and shell..."
-sudo update-alternatives --set x-terminal-emulator /usr/bin/wezterm
+sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /usr/bin/wezterm 50
 chsh -s $(which zsh)
 
 # 3. Install fd, lazygit, ripgrep
@@ -48,20 +43,29 @@ curl -sS https://starship.rs/install.sh | sh
 
 # 6. Install Docker and Docker Compose
 echo "Installing Docker and Docker Compose..."
-curl -fsSL https://get.docker.com -o get-docker.sh
-sudo sh ./get-docker.sh --dry-run
-sudo rm ./get-docker.sh
-sudo apt-get install -y docker-compose-plugin
+sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
 
-# 8. Install Neovim
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# 7. Install Neovim
 echo "Installing Neovim..."
 curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage
 chmod u+x nvim-linux-x86_64.appimage
 mkdir -p /opt/nvim
 mv nvim-linux-x86_64.appimage /opt/nvim/nvim
-sudo apt install libfuse2
+sudo apt install fuse
 
-# 9. Install uv, nvm
+# 8. Install uv, nvm
 echo "Installing UV, NVM..."
 curl -LsSf https://astral.sh/uv/install.sh | sh
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
