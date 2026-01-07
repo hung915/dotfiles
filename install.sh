@@ -8,8 +8,8 @@ echo "Installing git, zsh, curl, wget, fzf, zoxide..."
 sudo apt-get install -y git zsh curl wget fzf zoxide
 
 # Backup the original .zshrc
-echo "Backing up Zsh configuration..."
-mv ~/.zshrc ~/.zshrc.bak
+#echo "Backing up Zsh configuration..."
+#mv ~/.zshrc ~/.zshrc.bak
 echo "Using this repo .zshrc"
 cp .zshrc ~/.zshrc
 
